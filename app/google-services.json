@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "347894684572",
+    "project_id": "jjapp-bb063",
+    "storage_bucket": "jjapp-bb063.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:347894684572:android:3d9beb500740830ff78659",
+        "android_client_info": {
+          "package_name": "com.example.jjapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYJqZZIF4-OzIOyKqVbMfUoGej1e8_7lw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
