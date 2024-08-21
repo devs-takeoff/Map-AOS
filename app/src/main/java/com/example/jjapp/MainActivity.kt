@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -91,6 +92,36 @@ class MainActivity : AppCompatActivity() {
                 // Get new FCM registration token
                 val token = task.result
                 println("FCM Registration Token: $token")
+
+                val url = "http://211.44.188.113:54000/saveToken"
+                try {
+                    val jsonObject = JSONObject()
+                    jsonObject.put("token", token)
+
+                    val stringRequest = object : StringRequest(
+                        Request.Method.POST, url,
+                        Response.Listener { response ->
+                            println("saveToken success")
+                        },
+                        Response.ErrorListener { error ->
+                            error.printStackTrace()
+                            println("saveToken fail")
+                        }
+                    ) {
+                        override fun getHeaders(): MutableMap<String, String> {
+                            val headers = HashMap<String, String>()
+                            headers["Content-Type"] = "application/json"
+                            return headers
+                        }
+
+                        override fun getBody(): ByteArray {
+                            return jsonObject.toString().toByteArray()
+                        }
+                    }
+                    requestQueue.add(stringRequest)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                }
             }
     }
 
