@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var requestQueue: RequestQueue
     private val handler = Handler(Looper.getMainLooper())
-    private val interval: Long = 1000
+    private val interval: Long = 10000
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
