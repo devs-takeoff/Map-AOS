@@ -14,6 +14,7 @@ import android.annotation.SuppressLint;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
@@ -21,6 +22,10 @@ import android.os.Build;
 import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import android.media.AudioManager;
+
 
 import org.json.JSONObject;
 
@@ -28,12 +33,30 @@ import org.json.JSONObject;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private static final String CHANNEL_ID = "default_channel_id";
 
+
+
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         // FCM 메시지를 수신했을 때의 처리
         if (remoteMessage.getNotification() != null) {
             // 알림 메시지 처리
             sendNotification(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody());
+
+            Intent intent = new Intent("com.example.NEW_MESSAGE");
+            intent.putExtra("message", remoteMessage.getNotification().getBody());
+            // 로컬 브로드캐스트를 사용하여 메시지를 전송합니다.
+            LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
+
+//            // 현재 알림 볼륨을 저장 (필요에 따라 원래 상태로 되돌리기 위해)
+//            val currentVolume = audioManager.getStreamVolume(AudioManager.STREAM_NOTIFICATION);
+//
+//            // 알림 소리의 최대 볼륨을 가져오기
+//            val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_NOTIFICATION);
+//
+//            // 알림 소리의 볼륨을 최대치로 설정
+//            audioManager.setStreamVolume(STREAM_NOTIFICATION, maxVolume, AudioManager.FLAG_PLAY_SOUND);
+
         }
     }
 
@@ -81,7 +104,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         .setContentTitle(title)
                         .setContentText(body)
                         .setAutoCancel(true)
-                        .setSound(defaultSoundUri)
+                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                        .setSound(defaultSoundUri, AudioManager.STREAM_ALARM)
                         .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager =
